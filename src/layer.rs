@@ -5,26 +5,32 @@ use ndarray_rand::rand_distr::Uniform;
 use std::num::NonZeroUsize;
 
 // ---------------------------
-pub struct Weights(pub Array2<f64>);
+pub struct Weights
+{
+    pub values : Array2<f64>
+}
 
 impl std::fmt::Debug for Weights 
 {
     fn fmt(&self, form: &mut std::fmt::Formatter) -> std::fmt::Result 
     {
-        let nrows = self.0.nrows();
-        let ncols = self.0.ncols();
+        let nrows = self.values.nrows();
+        let ncols = self.values.ncols();
 
         write!(form, "Weights matrix {nrows}x{ncols}")
     }
 }
 
-pub struct Biases(pub Array2<f64>);
+pub struct Biases
+{
+    pub values : Array2<f64>
+}
 
 impl std::fmt::Debug for Biases 
 {
     fn fmt(&self, form: &mut std::fmt::Formatter) -> std::fmt::Result 
     {
-        let ncols = self.0.ncols();
+        let ncols = self.values.ncols();
 
         write!(form, "Biases {ncols}")
     }
@@ -59,12 +65,23 @@ impl Layer
         let distribution = Uniform::new(-limit, limit);
 
         let wgt_shape    = (input_size.get(), output_size.get());
-        let weights      = Weights(Array2::random(wgt_shape, distribution));
+        let weights      = Weights{ values : Array2::random(wgt_shape, distribution) };
 
         let out_shape    = (1, output_size.get());
-        let biases       = Biases(Array2::zeros(out_shape));
+        let biases       = Biases{ values : Array2::zeros(out_shape) };
 
         Layer { weights, biases }
+    }
+
+    /// Computes output of current layer
+    /// Args:
+    /// input: 2D array representing outputs from current layer
+    ///
+    /// Returns:
+    /// 2D array with inputs for next layer
+    pub fn forward(&self, input: &Array2<f64>) -> Array2<f64>
+    {
+        input.dot(&self.weights.values) + &self.biases.values
     }
 }
 // ---------------------------
