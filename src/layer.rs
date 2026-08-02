@@ -40,6 +40,13 @@ impl Layer
     /// Args:
     /// input_size : Unsigned representing size of input layer
     /// output_size: Unsigned with size of output layer
+    ///
+    /// Usage:
+    /// ```
+    /// use nets::layer::Layer;
+    ///
+    /// let layer = Layer::new(3, 2);
+    /// ```
     pub fn new(input_size: usize, output_size: usize) -> Self 
     {
         let limit        = (1.0 / input_size as f64).sqrt();
