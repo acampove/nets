@@ -1,6 +1,7 @@
 use ndarray::Array2;
 use ndarray_rand::RandomExt;
 use ndarray_rand::rand_distr::Uniform;
+use crate::activation::sigmoid;
 
 use std::num::NonZeroUsize;
 
@@ -95,7 +96,8 @@ impl Layer
     /// assert_eq!(output.shape(), &[1, 2]);
     pub fn forward(&self, input: &Array2<f64>) -> Array2<f64>
     {
-        input.dot(&self.weights.values) + &self.biases.values
+        let output = input.dot(&self.weights.values) + &self.biases.values;
+        sigmoid(&output)
     }
 }
 // ---------------------------
