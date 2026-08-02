@@ -1,9 +1,13 @@
 [package]
-name = "nets"
-version = "0.1.0"
-edition = "2024"
+name         = "nets"
+version      = "0.1.0"
+edition      = "2024"
+description  = "Library providing neural networks, implemented in Rust"
+license      = "MIT"          # or whatever you choose
+repository   = "https://github.com/acampove/nets"
+readme       = "README.md"
 
 [dependencies]
-ndarray = "0.16"
+ndarray      = "0.16"
 ndarray-rand = "0.15"
-rand = "0.8"
+rand         = "0.8"
