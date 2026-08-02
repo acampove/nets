@@ -2,6 +2,8 @@ use ndarray::Array2;
 use ndarray_rand::RandomExt;
 use ndarray_rand::rand_distr::Uniform;
 
+use std::num::NonZeroUsize;
+
 // ---------------------------
 pub struct Weights(pub Array2<f64>);
 
@@ -44,18 +46,22 @@ impl Layer
     /// Usage:
     /// ```
     /// use nets::layer::Layer;
+    /// use std::num::NonZeroUsize;
     ///
-    /// let layer = Layer::new(3, 2);
+    /// let in_size  = NonZeroUsize::new(3).unwrap();
+    /// let out_size = NonZeroUsize::new(2).unwrap();
+    ///
+    /// let layer = Layer::new(in_size, out_size);
     /// ```
-    pub fn new(input_size: usize, output_size: usize) -> Self 
+    pub fn new(input_size: NonZeroUsize, output_size: NonZeroUsize) -> Self 
     {
-        let limit        = (1.0 / input_size as f64).sqrt();
+        let limit        = (1.0 / input_size.get() as f64).sqrt();
         let distribution = Uniform::new(-limit, limit);
 
-        let wgt_shape    = (input_size, output_size);
+        let wgt_shape    = (input_size.get(), output_size.get());
         let weights      = Weights(Array2::random(wgt_shape, distribution));
 
-        let out_shape    = (1, output_size);
+        let out_shape    = (1, output_size.get());
         let biases       = Biases(Array2::zeros(out_shape));
 
         Layer { weights, biases }
