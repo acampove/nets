@@ -79,6 +79,20 @@ impl Layer
     ///
     /// Returns:
     /// 2D array with inputs for next layer
+    ///
+    /// ```
+    /// use nets::layer::Layer;
+    /// use std::num::NonZeroUsize;
+    /// use ndarray::array;
+    ///
+    /// let input_size  = NonZeroUsize::new(3).unwrap();
+    /// let output_size = NonZeroUsize::new(2).unwrap();
+    /// let layer       = Layer::new(input_size, output_size);
+    ///
+    /// let input  = array![[1.0, 2.0, 3.0]];
+    /// let output = layer.forward(&input);
+    ///
+    /// assert_eq!(output.shape(), &[1, 2]);
     pub fn forward(&self, input: &Array2<f64>) -> Array2<f64>
     {
         input.dot(&self.weights.values) + &self.biases.values
