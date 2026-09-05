@@ -23,12 +23,38 @@ pub struct CrossEntropy {
 }
 
 impl CrossEntropy {
+    /// cross-entropy loss
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let toml_str = "epsilon = 1e-8";
+    /// let cfg : nets::loss::CrossEntropyCfg = toml::from_str(toml_str).unwrap();
+    /// let cet = nets::loss::CrossEntropy::new(cfg);
+    /// ```
     pub fn new(cfg : CrossEntropyCfg) -> Self {
         Self { cfg }
     }
 }
 
 impl Loss for CrossEntropy {
+    /// Compuntes loss given prediction and target
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use ndarray::array;
+    /// use nets::loss::{Loss, CrossEntropy, CrossEntropyCfg};
+    ///
+    /// let cfg = CrossEntropyCfg { epsilon: 1e-8 };
+    /// let cet = CrossEntropy::new(cfg);
+    ///
+    /// let predictions = array![0.9, 0.1];
+    /// let targets = array![1.0, 0.0];
+    ///
+    /// let loss = cet.compute(&predictions, &targets);
+    /// assert!(loss > 0.0);
+    /// ```
     fn compute(&self, predictions : &Array1<f64>, targets : &Array1<f64>) -> f64 {
         - predictions
         .iter()
