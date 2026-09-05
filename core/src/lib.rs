@@ -4,7 +4,7 @@
 //!
 //! Project structure overview:
 //!
-//! ![Dependency graph](docs/dependencies.png)
+//! ![Dependency graph](docs/dependencies.svg)
 
 pub mod layer;
 pub mod network;

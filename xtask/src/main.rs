@@ -22,7 +22,7 @@ fn regenerate_docs() {
     fs::create_dir_all("core/docs").expect("failed to create core/docs");
 
     let mut dot_child = Command::new("dot")
-        .args(["-Tpng", "-o", "docs/dependencies.png"])
+        .args(["-Tsvg", "-o", "docs/dependencies.svg"])
         .current_dir("core")
         .stdin(Stdio::piped())
         .spawn()
@@ -46,10 +46,10 @@ fn regenerate_docs() {
     let dest_dir = "target/doc/nets/docs";
     fs::create_dir_all(dest_dir).expect("failed to create doc output dir");
     fs::copy(
-        "core/docs/dependencies.png",
-        format!("{dest_dir}/dependencies.png"),
+        "core/docs/dependencies.svg",
+        format!("{dest_dir}/dependencies.svg"),
     )
-        .expect("failed to copy PNG into doc output");
+        .expect("failed to copy SVG into doc output");
 }
 
 fn main()
