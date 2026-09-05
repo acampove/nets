@@ -42,6 +42,14 @@ fn regenerate_docs() {
         .current_dir("core")
         .status()
         .expect("failed to run cargo doc");
+
+    let dest_dir = "target/doc/nets/docs";
+    fs::create_dir_all(dest_dir).expect("failed to create doc output dir");
+    fs::copy(
+        "core/docs/dependencies.png",
+        format!("{dest_dir}/dependencies.png"),
+    )
+        .expect("failed to copy PNG into doc output");
 }
 
 fn main()
