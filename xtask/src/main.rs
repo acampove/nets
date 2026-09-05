@@ -12,6 +12,8 @@ fn regenerate_docs() {
             "--no-uses",
             "--no-externs",
             "--no-sysroot",
+            "--layout",
+            "dot",
             "-p",
             "nets",
         ])
@@ -48,8 +50,7 @@ fn regenerate_docs() {
     fs::copy(
         "core/docs/dependencies.svg",
         format!("{dest_dir}/dependencies.svg"),
-    )
-        .expect("failed to copy SVG into doc output");
+    ).expect("failed to copy SVG into doc output");
 }
 
 fn main()
