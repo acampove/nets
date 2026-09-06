@@ -20,9 +20,8 @@ fn forward()
     let in_size  = NonZeroUsize::new(3).unwrap();
     let out_size = NonZeroUsize::new(2).unwrap();
 
-    let layer  = Layer::new(in_size, out_size);
-    let input  = Array2::<f64>::zeros((1, 3));
-
-    let _values = layer.forward(&input);
+    let mut layer= Layer::new(in_size, out_size);
+    let input    = Array2::<f64>::zeros((1, 3));
+    let _values  = layer.forward(&input);
 }
 

@@ -23,9 +23,9 @@ fn forward()
         NonZeroUsize::new(2).unwrap(),
     ];
 
-    let network = Network::new(&sizes);
-    let input   = array![[1.0, 2.0, 3.0]];
-    let output  = network.forward(&input);
+    let mut network = Network::new(&sizes);
+    let input       = array![[1.0, 2.0, 3.0]];
+    let output      = network.forward(&input);
 
     assert_eq!(output.shape(), &[1, 2]);
 }

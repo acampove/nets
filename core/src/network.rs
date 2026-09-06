@@ -50,17 +50,17 @@ impl Network
     ///     NonZeroUsize::new(2).unwrap(),
     /// ];
     ///
-    /// let network = Network::new(&sizes);
-    /// let input   = array![[1.0, 2.0, 3.0]];
-    /// let output  = network.forward(&input);
+    /// let mut network = Network::new(&sizes);
+    /// let input       = array![[1.0, 2.0, 3.0]];
+    /// let output      = network.forward(&input);
     ///
     /// assert_eq!(output.shape(), &[1, 2]);
     /// ```
-    pub fn forward(&self, input: &Array2<f64>) -> Array2<f64>
+    pub fn forward(&mut self, input: &Array2<f64>) -> Array2<f64>
     {
         let mut output = input.clone();
 
-        for layer in &self.layers 
+        for layer in &mut self.layers 
         {
             output = layer.forward(&output);
         }
