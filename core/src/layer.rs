@@ -1,3 +1,9 @@
+//! Module holding
+//!
+//! - Layer: Struct representing layer
+//! - Weights: Struct holding weights for layers
+//! - Biases
+
 use ndarray::Array2;
 use ndarray_rand::RandomExt;
 use ndarray_rand::rand_distr::Uniform;
