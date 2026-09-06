@@ -1,3 +1,5 @@
+//! Module holding Network struct
+
 use crate::layer::Layer;
 use ndarray::Array2;
 use std::num::NonZeroUsize;
