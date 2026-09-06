@@ -39,6 +39,7 @@ impl std::fmt::Debug for Biases
 // ---------------------------
 pub struct Layer
 {
+    pub last_input : Array2<f64>,
     pub weights    : Weights,
     pub biases     : Biases ,
     pub activation : Box<dyn Activation>,
@@ -73,8 +74,9 @@ impl Layer
         let biases       = Biases{ values : Array2::zeros(out_shape) };
 
         let activation   = Box::new(Sigmoid);
+        let last_input   = Array2::<f64>::zeros((0, 0));
 
-        Layer { weights, biases, activation }
+        Layer { weights, biases, activation, last_input }
     }
 
     /// Computes output of current layer
@@ -91,16 +93,22 @@ impl Layer
     ///
     /// let input_size  = NonZeroUsize::new(3).unwrap();
     /// let output_size = NonZeroUsize::new(2).unwrap();
-    /// let layer       = Layer::new(input_size, output_size);
+    /// let mut layer   = Layer::new(input_size, output_size);
     ///
     /// let input  = array![[1.0, 2.0, 3.0]];
     /// let output = layer.forward(&input);
     ///
     /// assert_eq!(output.shape(), &[1, 2]);
-    pub fn forward(&self, input: &Array2<f64>) -> Array2<f64>
+    pub fn forward(& mut self, input: &Array2<f64>) -> Array2<f64>
     {
-        let output = input.dot(&self.weights.values) + &self.biases.values;
+        let output      = input.dot(&self.weights.values) + &self.biases.values;
+        self.last_input = input.clone();
         self.activation.forward(&output)
+    }
+
+    pub fn gradient(&self, input: &Array2<f64>) -> Array2<f64>
+    {
+        input.clone()
     }
 }
 // ---------------------------
