@@ -1,3 +1,5 @@
+//! Module with activation layer structs
+
 use::ndarray::Array2;
 
 pub trait Activation {
