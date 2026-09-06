@@ -1,7 +1,7 @@
 use ndarray::Array2;
 use ndarray_rand::RandomExt;
 use ndarray_rand::rand_distr::Uniform;
-use crate::activation::sigmoid;
+use crate::activation::{Activation, Sigmoid};
 
 use std::num::NonZeroUsize;
 
@@ -39,8 +39,9 @@ impl std::fmt::Debug for Biases
 // ---------------------------
 pub struct Layer
 {
-    pub weights: Weights,
-    pub biases : Biases ,
+    pub weights    : Weights,
+    pub biases     : Biases ,
+    pub activation : Box<dyn Activation>,
 }
 // ---------------------------
 impl Layer
@@ -71,7 +72,9 @@ impl Layer
         let out_shape    = (1, output_size.get());
         let biases       = Biases{ values : Array2::zeros(out_shape) };
 
-        Layer { weights, biases }
+        let activation   = Box::new(Sigmoid);
+
+        Layer { weights, biases, activation }
     }
 
     /// Computes output of current layer
@@ -97,7 +100,7 @@ impl Layer
     pub fn forward(&self, input: &Array2<f64>) -> Array2<f64>
     {
         let output = input.dot(&self.weights.values) + &self.biases.values;
-        sigmoid(&output)
+        self.activation.forward(&output)
     }
 }
 // ---------------------------
