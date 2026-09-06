@@ -60,7 +60,7 @@ impl Network
     {
         let mut output = input.clone();
 
-        for layer in &mut self.layers 
+        for layer in &mut self.layers
         {
             output = layer.forward(&output);
         }
