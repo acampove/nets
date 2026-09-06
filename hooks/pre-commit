@@ -1,0 +1,4 @@
+#!/usr/bin/sh
+
+cargo xtask
+git add core/docs/dependencies.svg
