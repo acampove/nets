@@ -3,7 +3,9 @@ use serde::Deserialize;
 
 pub trait Loss {
     fn compute(&self, predictions : &Array1<f64>, targets : &Array1<f64>) -> f64;
+    fn gradient(&self, predictions : &Array1<f64>, targets : &Array1<f64>) -> Array1<f64>;
 }
+
 /// Configuration for cross-entropy loss
 ///
 /// # Examples
@@ -38,7 +40,7 @@ impl CrossEntropy {
 }
 
 impl Loss for CrossEntropy {
-    /// Compuntes loss given prediction and target
+    /// Computes loss given prediction and target
     ///
     /// # Examples
     ///
@@ -61,5 +63,31 @@ impl Loss for CrossEntropy {
         .zip(targets.iter())
         .map(|(&p, &t)| t * (p.max(self.cfg.epsilon)).ln())
         .sum::<f64>()
+    }
+
+    /// Computes gradient for cross-entropy
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// use ndarray::array;
+    /// use nets::loss::{Loss, CrossEntropy, CrossEntropyCfg};
+    ///
+    /// let cfg = CrossEntropyCfg { epsilon: 1e-8 };
+    /// let cet = CrossEntropy::new(cfg);
+    ///
+    /// let predictions = array![1.0, 1.0];
+    /// let targets = array![1.0, 2.0];
+    ///
+    /// let grad = cet.gradient(&predictions, &targets);
+    /// let expected = array![-1.0, -2.0];
+    /// assert!(grad == expected);
+    /// ```
+    fn gradient(&self, predictions : &Array1<f64>, targets : &Array1<f64>) -> Array1<f64> {
+        predictions
+        .iter()
+        .zip(targets.iter())
+        .map(|(&p, &t)| - t / p)
+        .collect::<Array1<f64>>()
     }
 }
