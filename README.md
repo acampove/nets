@@ -10,6 +10,6 @@ python bindings alongside.
 For development, the precommit hooks need to be setup with:
 
 ```bash
-git config core.hooksPath hooks
+git config core.hooksPath $PWD/hooks
 ```
 
